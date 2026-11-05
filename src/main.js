@@ -7,7 +7,7 @@ const form = document.querySelector("#project-form");
 const toast = document.querySelector("#toast");
 const pages = ["dashboard","projects","utilities","connections","remote","youtube","business","settings"];
 const labels = {dashboard:"Overview",projects:"Projects",utilities:"Utilities",connections:"Connections",remote:"Remote PC",youtube:"YouTube",business:"Business",settings:"Settings"};
-let currentPage = "dashboard";
+let currentPage = "";
 let projects = readStore("projects", []);
 if (!Array.isArray(projects)) projects = [];
 projects = projects.filter(project => project && typeof project.id === "string" && typeof project.name === "string")
