@@ -41,6 +41,9 @@ test("agent instructions are discoverable and preserve the Nathan Gitter motion 
   const motion = await read("../docs/design/motion.md");
   assert.match(readme, /\[AGENTS\.md\]\(AGENTS\.md\)/);
   assert.match(instructions, /Nathan Gitter/);
+  assert.match(instructions, /MUST inspect the actual skills, load their instructions into their own working context/i);
+  assert.match(instructions, /Apply, do not just acknowledge/i);
+  assert.match(instructions, /final report must briefly state the skill procedures it actually applied/i);
   assert.match(instructions, /preserve.*position and velocity/i);
   assert.match(motion, /Fluid Interfaces/);
   assert.match(motion, /prefers-reduced-motion/);
