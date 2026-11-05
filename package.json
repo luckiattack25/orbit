@@ -1,1 +1,11 @@
-{"name":"orbit","version":"0.1.0","private":true,"type":"module","scripts":{"dev":"node scripts/dev-server.mjs","test":"node --test","check":"node --check src/main.js && node --check src/storage.js && node --check src/utils.js && node --check scripts/dev-server.mjs"}}
+{
+  "name": "orbit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "test": "node --test",
+    "check": "node --check src/main.js && node --check src/storage.js && node --check src/utils.js && node --check scripts/dev-server.mjs && node --check tests/utils.test.js && node --check tests/storage.test.js && node --check tests/pages.test.js"
+  }
+}
