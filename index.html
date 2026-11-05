@@ -2,6 +2,8 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#101114">
 <meta name="description" content="ORBIT — Everything in your orbit. A personal digital environment.">
@@ -29,11 +31,12 @@
 <div class="sidebar-bottom"><button class="nav-item" data-page="settings"><span class="nav-icon">⚙</span>Settings</button><div class="profile-line"><span class="avatar">O</span><span><strong>Personal space</strong><small>Local workspace</small></span><span class="local-indicator" title="Stored in this browser"></span></div></div>
 </aside>
 <main class="main-area">
-<header class="topbar"><button class="mobile-menu" id="menu-toggle" aria-label="Open navigation">☰</button><div class="breadcrumb"><span>ORBIT</span><b>/</b><strong id="page-name">Overview</strong></div><div class="top-actions"><span class="local-pill"><i></i> Local workspace</span><button class="icon-button" id="theme-cycle" aria-label="Change theme" title="Change theme">◐</button></div></header>
+<header class="topbar"><button class="mobile-menu" id="menu-toggle" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">☰</button><div class="breadcrumb"><span>ORBIT</span><b>/</b><strong id="page-name">Overview</strong></div><div class="top-actions"><span class="local-pill"><i></i> Local workspace</span><button class="icon-button" id="theme-cycle" aria-label="Change theme" title="Change theme">◐</button></div></header>
 <div class="content" id="app" tabindex="-1"></div>
 <footer class="footer"><span>ORBIT <span id="version-label">0.1.0</span></span><span>Everything in your orbit.</span></footer>
 </main>
 </div>
+<noscript><p class="noscript-message">ORBIT needs JavaScript enabled to run its local workspace tools.</p></noscript>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <dialog id="project-dialog" class="dialog"><form id="project-form"><div class="dialog-head"><div><h2 id="dialog-title">New project</h2><p>Keep your work organized.</p></div><button type="button" class="icon-button" data-close-dialog aria-label="Close">×</button></div><input type="hidden" id="project-id"><label for="project-name">Project name</label><input id="project-name" name="name" maxlength="60" required placeholder="What are you working on?"><label for="project-description">Description</label><textarea id="project-description" name="description" maxlength="240" rows="3" placeholder="A short description"></textarea><label for="project-status">Status</label><select id="project-status" name="status"><option>In progress</option><option>Planned</option><option>On hold</option><option>Completed</option></select><div class="dialog-actions"><button type="button" class="button secondary" data-close-dialog>Cancel</button><button class="button primary" type="submit">Save project</button></div></form></dialog>
 <script type="module" src="./src/main.js"></script>
