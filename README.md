@@ -43,6 +43,7 @@ Projects, scratchpad content, and preferences are stored in the current browser 
 ## Project notes
 
 - Product and architecture: [docs/design/overview.md](docs/design/overview.md)
+- Motion language: [docs/design/motion.md](docs/design/motion.md)
 - Implementation plan: [docs/plans/foundation.md](docs/plans/foundation.md)
 - Engineering guidance: [docs/engineering-guidance.md](docs/engineering-guidance.md)
 - Security limitations: [SECURITY.md](SECURITY.md)
