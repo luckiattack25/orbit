@@ -8,21 +8,23 @@ ORBIT is a personal, local-first digital environment for projects, utilities, an
 
 https://luckiattack25.github.io/orbit/
 
+## Contributor and AI-agent instructions
+
+Start with [AGENTS.md](AGENTS.md). It is the canonical, maintained guide to ORBIT's product direction, design and motion standards, architecture, hosting constraints, security boundaries, supplied engineering skills, and expected development workflow.
+
 ## Hosting
 
-GitHub Pages publishes the repository root from the `main` branch. The site uses plain HTML, CSS, SVG, and native JavaScript modules. It requires no Node.js runtime, server, build step, database, or environment variables when hosted.
+GitHub Pages publishes the repository root from the **main** branch. The site uses plain HTML, CSS, SVG, and native JavaScript modules. It requires no Node.js runtime, server, build step, database, or environment variables when hosted.
 
-The `.nojekyll` file tells GitHub Pages to publish the static files directly without Jekyll processing. All app assets use relative paths so the site works under the `/orbit/` project-site path.
+The **.nojekyll** file tells GitHub Pages to publish the static files directly without Jekyll processing. All app assets use relative paths so the site works under the **/orbit/** project-site path.
 
 ## Local development
 
 Requirements: Node.js 20+ (local preview only).
 
-```bash
-npm run dev
-npm test
-npm run check
-```
+    npm run dev
+    npm test
+    npm run check
 
 Open http://localhost:4173 after starting the local preview server.
 
@@ -50,7 +52,7 @@ Projects, scratchpad content, and preferences are stored in the current browser 
 
 ## Branding
 
-The original orbital logo was not present in the repository when the foundation was created. The current mark is a temporary geometric replacement in `assets/orbit-mark.svg`.
+The original orbital logo was not present in the repository when the foundation was created. The current mark is a temporary geometric replacement in **assets/orbit-mark.svg**.
 
 ## Version
 
