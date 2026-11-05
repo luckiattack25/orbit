@@ -9,8 +9,19 @@ const pages = ["dashboard","projects","utilities","connections","remote","youtub
 const labels = {dashboard:"Overview",projects:"Projects",utilities:"Utilities",connections:"Connections",remote:"Remote PC",youtube:"YouTube",business:"Business",settings:"Settings"};
 let currentPage = "dashboard";
 let projects = readStore("projects", []);
+if (!Array.isArray(projects)) projects = [];
+projects = projects.filter(project => project && typeof project.id === "string" && typeof project.name === "string")
+  .map(project => ({
+    ...project,
+    description: typeof project.description === "string" ? project.description : "",
+    status: ["In progress", "Planned", "On hold", "Completed"].includes(project.status) ? project.status : "Planned",
+    createdAt: Number.isFinite(project.createdAt) ? project.createdAt : Date.now(),
+    updatedAt: Number.isFinite(project.updatedAt) ? project.updatedAt : Date.now()
+  }));
 let prefs = readStore("preferences", {theme:"dark"});
+if (!prefs || !["dark", "light", "system"].includes(prefs.theme)) prefs = {theme:"dark"};
 let scratch = readStore("scratchpad", "");
+if (typeof scratch !== "string") scratch = "";
 let toastTimer;
 
 function notify(message) {
@@ -30,8 +41,10 @@ function setTheme(theme) {
   const meta = document.querySelector('meta[name="theme-color"]');
   meta.content = theme === "light" ? "#f4f4f6" : "#101114";
 }
-function navigate(page) {
+function navigate(page, syncUrl = true) {
   if (!pages.includes(page)) page = "dashboard";
+  if (syncUrl && location.hash.slice(1) !== page) history.pushState({page}, "", "#" + page);
+  if (page === currentPage && document.querySelector("#page-name")?.textContent === labels[page]) return;
   currentPage = page;
   document.querySelectorAll(".nav-item[data-page]").forEach(button => button.classList.toggle("active", button.dataset.page === page));
   document.querySelector("#page-name").textContent = labels[page];
@@ -42,8 +55,11 @@ function pageHeader(title, subtitle, action = "") {
   return `<div class="page-heading"><div><h1>${title}</h1><p>${subtitle}</p></div>${action}</div>`;
 }
 function projectMarkup(project) {
-  const status = escapeHTML(project.status || "Planned");
-  return `<article class="project-row"><div class="project-symbol">◈</div><div class="project-copy"><h3>${escapeHTML(project.name)}</h3><p>${escapeHTML(project.description || "No description yet.")}</p></div><span class="status status-${status.toLowerCase().replace(/\s/g,"-")}">${status}</span><button class="icon-button" data-edit-project="${project.id}" aria-label="Edit ${escapeHTML(project.name)}">···</button></article>`;
+  const status = project.status;
+  const safeStatus = escapeHTML(status);
+  const projectId = escapeHTML(project.id);
+  const projectName = escapeHTML(project.name);
+  return `<article class="project-row"><div class="project-symbol">◈</div><div class="project-copy"><h3>${projectName}</h3><p>${escapeHTML(project.description || "No description yet.")}</p></div><span class="status status-${status.toLowerCase().replace(/\s/g,"-")}">${safeStatus}</span><div class="project-actions"><button class="text-button" data-edit-project="${projectId}" aria-label="Edit ${projectName}">Edit</button><button class="text-button delete-project" data-delete-project="${projectId}" aria-label="Delete ${projectName}">Delete</button></div></article>`;
 }
 function dashboard() {
   const recent = [...projects].sort((a,b)=>b.updatedAt-a.updatedAt).slice(0,3);
@@ -114,6 +130,17 @@ document.addEventListener("click", event => {
  if(toolButton){ renderTool(toolButton.dataset.tool); return; }
  const edit = event.target.closest("[data-edit-project]");
  if(edit){ const project=projects.find(p=>p.id===edit.dataset.editProject); if(project) openProject(project); return; }
+ const remove = event.target.closest("[data-delete-project]");
+ if(remove){
+  const project = projects.find(item => item.id === remove.dataset.deleteProject);
+  if(project && confirm(`Delete "${project.name}"? This cannot be undone.`)){
+   projects = projects.filter(item => item.id !== project.id);
+   persist();
+   render();
+   notify("Project deleted");
+  }
+  return;
+ }
  const close = event.target.closest("[data-close-dialog]");
  if(close){dialog.close();return;}
  const theme = event.target.closest("[data-theme-choice]");
@@ -129,8 +156,15 @@ document.addEventListener("click", event => {
  }
  if(action==="clear-json"){document.querySelector("#json-input").value="";document.querySelector("#json-output").textContent="";document.querySelector("#json-status").textContent="";}
  if(action==="uppercase"||action==="lowercase"){const input=document.querySelector("#text-input");input.value=action==="uppercase"?input.value.toUpperCase():input.value.toLowerCase();input.dispatchEvent(new Event("input"));}
- if(action==="copy-text"){const input=document.querySelector("#text-input");navigator.clipboard?.writeText(input.value).then(()=>notify("Text copied")).catch(()=>notify("Clipboard access unavailable"));}
- if(action==="reset-data"&&confirm("Clear all ORBIT data stored in this browser? This cannot be undone.")){localStorage.removeItem("orbit:v1:projects");localStorage.removeItem("orbit:v1:scratchpad");localStorage.removeItem("orbit:v1:preferences");projects=[];scratch="";prefs={theme:"dark"};setTheme("dark");render();notify("Local workspace cleared");}
+ if(action==="copy-text"){
+  const input=document.querySelector("#text-input");
+  if(!navigator.clipboard?.writeText){notify("Clipboard access is unavailable in this browser");return;}
+  navigator.clipboard.writeText(input.value).then(()=>notify("Text copied")).catch(()=>notify("Clipboard access unavailable"));
+ }
+ if(action==="reset-data"&&confirm("Clear all ORBIT data stored in this browser? This cannot be undone.")){
+  removeStore("projects");removeStore("scratchpad");removeStore("preferences");
+  projects=[];scratch="";prefs={theme:"dark"};setTheme("dark");render();notify("Local workspace cleared");
+ }
 });
 document.addEventListener("input", event=>{
  if(event.target.id==="scratch-editor"){scratch=event.target.value;writeStore("scratchpad",scratch);document.querySelector("#scratch-status").textContent="Saved locally";}
@@ -142,5 +176,10 @@ document.querySelector("#menu-toggle").addEventListener("click",()=>document.que
 document.querySelector("#theme-cycle").addEventListener("click",()=>{const order=["dark","light","system"];setTheme(order[(order.indexOf(prefs.theme)+1)%order.length]);if(currentPage==="settings")render();notify("Theme: "+prefs.theme);});
 window.matchMedia("(prefers-color-scheme: light)").addEventListener?.("change",()=>{if(prefs.theme==="system")setTheme("system");});
 setTheme(prefs.theme);
-navigate(location.hash.slice(1)||"dashboard");
-window.addEventListener("hashchange",()=>{const page=location.hash.slice(1);if(pages.includes(page))navigate(page);});
+navigate(location.hash.slice(1)||"dashboard", !location.hash);
+function restorePageFromUrl() {
+ const page = location.hash.slice(1);
+ if (pages.includes(page) && page !== currentPage) navigate(page, false);
+}
+window.addEventListener("hashchange", restorePageFromUrl);
+window.addEventListener("popstate", restorePageFromUrl);
