@@ -191,7 +191,7 @@ Do not install dependencies without a concrete need. If a new dependency is just
 
 ## 10. Mandatory AI skill loading and application
 
-**This section is a requirement, not optional inspiration.** The owner supplied these skill repositories because ORBIT's AI contributors are expected to inspect the actual skills, load their instructions into their own working context, and apply the procedures to how they plan, design, code, test, review, and report. Merely listing a repository, reading its title, or saying a skill was considered does not satisfy this requirement.
+**This section is a requirement, not optional inspiration.** The owner supplied these skill repositories because every ORBIT AI contributor MUST inspect the actual skills, load their instructions into their own working context, and apply the procedures to how they plan, design, code, test, review, and report. Merely listing a repository, reading its title, or saying a skill was considered does not satisfy this requirement.
 
 ### Required onboarding procedure
 
