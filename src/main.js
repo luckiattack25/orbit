@@ -1,4 +1,4 @@
-import { readStore, writeStore, createId } from "./storage.js";
+import { readStore, writeStore, removeStore, createId } from "./storage.js";
 import { escapeHTML, analyzeText, formatJSON } from "./utils.js";
 
 const app = document.querySelector("#app");
