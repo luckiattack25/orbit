@@ -34,3 +34,14 @@ test("motion respects reduced-motion preferences", async () => {
   assert.match(css, /@keyframes planet-float/);
   assert.match(css, /@keyframes orbit-turn/);
 });
+
+test("agent instructions are discoverable and preserve the Nathan Gitter motion standard", async () => {
+  const instructions = await read("../AGENTS.md");
+  const readme = await read("../README.md");
+  const motion = await read("../docs/design/motion.md");
+  assert.match(readme, /\[AGENTS\.md\]\(AGENTS\.md\)/);
+  assert.match(instructions, /Nathan Gitter/);
+  assert.match(instructions, /preserve.*position and velocity/i);
+  assert.match(motion, /Fluid Interfaces/);
+  assert.match(motion, /prefers-reduced-motion/);
+});
