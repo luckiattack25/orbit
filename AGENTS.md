@@ -189,23 +189,57 @@ For each meaningful task:
 
 Do not install dependencies without a concrete need. If a new dependency is justified, explain why, check its maintenance and licensing, assess its size/security impact, and preserve the static production contract.
 
-## 10. Skills and guidance supplied for ORBIT
+## 10. Mandatory AI skill loading and application
 
-The following repositories were supplied or selected as guidance. Their useful principles should inform work; they are not automatically installed tools, runtime dependencies, or a requirement to copy their stacks. Apply relevant guidance selectively and explain when a recommendation does not fit ORBIT's vanilla static architecture.
+**This section is a requirement, not optional inspiration.** The owner supplied these skill repositories because ORBIT's AI contributors are expected to inspect the actual skills, load their instructions into their own working context, and apply the procedures to how they plan, design, code, test, review, and report. Merely listing a repository, reading its title, or saying a skill was considered does not satisfy this requirement.
 
-- [Superpowers](https://github.com/obra/superpowers) — brainstorming, scoped planning, test-driven development, and verification before completion.
-- [Matt Pocock's skills](https://github.com/mattpocock/skills) — codebase design, cohesive modules, and small interfaces.
-- [Addy Osmani's agent skills](https://github.com/addyosmani/agent-skills) — frontend UI engineering, quality, security, and hardening.
-- [Vercel agent skills](https://github.com/vercel-labs/agent-skills) — relevant web-design and engineering guidance. React-specific practices do not override the current native-module architecture.
-- [Apple Design skill by Dick Wu](https://github.com/dickwu/apple-design-skill) — accessibility, layout, typography, color, and platform-aware interface craft. Use as design guidance, not as a mandate to clone Apple UI.
-- [Impeccable](https://github.com/pbakaus/impeccable) — design direction, responsive composition, useful states, and a high craft floor.
-- [Hallmark](https://github.com/Nutlope/hallmark) — quality floor and distinctive visual direction; apply selectively.
-- [Cloudflare Security Audit Skill](https://github.com/cloudflare/security-audit-skill) — threat boundaries and source-first defensive review. A review using these principles is not automatically a complete security audit.
-- [Microsoft Playwright](https://github.com/microsoft/playwright) — browser-test concepts and end-to-end verification when a suitable browser test setup is available. Do not claim Playwright tests were run unless they were.
-- [Anthropic Knowledge Work Plugins](https://github.com/anthropics/knowledge-work-plugins) — workflow and role-specific structure where relevant; do not add unrelated plugin workflows to the product.
-- [Nathan Gitter's Fluid Interfaces](https://github.com/nathangitter/fluid-interfaces) — primary practical motion reference for fluid, gesture-aware interaction.
+### Required onboarding procedure
 
-The existing review record is in docs/engineering-guidance.md. If a skill is unavailable, outdated, conflicts with a project constraint, or does not apply to the current stack, say so and continue with the best compatible approach.
+On the first session working in this repository, and again whenever the current agent environment does not retain the prior skill context:
+
+1. **Inspect every supplied skill repository below.** Open the repository and inspect its current structure. Do not assume a README is the skill itself.
+2. **Find and read the actual skill instructions.** Look for files named SKILL.md, skill.md, or the equivalent documented entry point. Read the top-level skill instructions and the task-relevant skill files, references, and checklists. Follow links within a skill when they are part of its procedure.
+3. **Load skills into the agent, not the website.** Use the AI platform's supported skill loader, skill directory, plugin, or workspace mechanism to activate the relevant instructions for the agent session. If the environment cannot install skills, read their complete relevant instructions and carry those rules in the active working context. Do not add agent skills as ORBIT runtime dependencies or bundle them into the deployed website.
+4. **Apply, do not just acknowledge.** Use each relevant skill's workflow, questions, constraints, and verification criteria in the work itself. Translate the guidance to ORBIT's static HTML/CSS/native-JavaScript architecture; do not blindly copy a skill's framework assumptions.
+5. **Resolve conflicts deliberately.** Follow the source-of-truth order in Section 1. ORBIT's product requirements, GitHub Pages constraints, user direction, and safety/security requirements take precedence over incompatible generic skill advice. Explain any material incompatibility; do not silently ignore a relevant skill.
+6. **Be honest about access.** If a repository, skill file, or installer cannot be reached, state exactly what was unavailable. Do not claim a skill was loaded, installed, or applied unless its instructions were actually inspected and used.
+
+### Per-task skill selection
+
+Before implementing a task, identify which loaded skills apply. At minimum, consider the categories below:
+
+- **Planning and implementation process:** use Superpowers brainstorming, writing-plans, test-driven-development, and verification-before-completion procedures where relevant.
+- **Architecture and code organization:** use Matt Pocock's codebase-design/deep-module guidance when changing module boundaries, data flow, or core logic.
+- **Frontend implementation:** use Addy Osmani's frontend UI engineering guidance for interface work; use Vercel's applicable web-design/engineering skills where they fit the native web stack.
+- **Design and interaction:** use Dick Wu's Apple Design skill and Impeccable's relevant design skills for layout, typography, hierarchy, accessibility, responsiveness, and craft; use Hallmark's quality-floor guidance where applicable.
+- **Motion and gestures:** use Nathan Gitter's Fluid Interfaces work as the primary practical motion reference, together with the dedicated standard in Section 4 and docs/design/motion.md.
+- **Security:** use Cloudflare's Security Audit skill for security-sensitive changes, integrations, data handling, browser-to-device connections, and threat-boundary reviews.
+- **Browser verification:** use Playwright skills and tests when a browser runner is available and useful. If unavailable, perform the strongest available checks and explicitly state that browser automation was not run.
+- **Specialized workflows:** inspect Anthropic Knowledge Work Plugins for a role-specific workflow when the task genuinely calls for one; do not install unrelated workflows merely to increase the skill count.
+
+### Supplied skill repositories — inspect their actual skill files
+
+| Source | Required inspection / application |
+| --- | --- |
+| [Superpowers](https://github.com/obra/superpowers) | Inspect the skill catalog and read brainstorming, writing-plans, test-driven-development, and verification-before-completion skills. Apply the relevant workflow stages. |
+| [Matt Pocock skills](https://github.com/mattpocock/skills) | Inspect the catalog and read codebase-design and relevant architecture/deep-module skills before structural changes. |
+| [Addy Osmani agent skills](https://github.com/addyosmani/agent-skills) | Inspect and load the applicable frontend UI engineering, testing, and security/hardening skills. |
+| [Vercel agent skills](https://github.com/vercel-labs/agent-skills) | Inspect the available skills; use relevant web-design and engineering guidance. React-specific skills are not applicable unless the project architecture intentionally changes. |
+| [Apple Design skill by Dick Wu](https://github.com/dickwu/apple-design-skill) | Read the skill entry point and relevant accessibility, layout, typography, color, and platform guidance for visual/interface tasks. |
+| [Impeccable](https://github.com/pbakaus/impeccable) | Inspect its skill catalog and load relevant design direction, new-work, and craft-floor skills for UI changes. |
+| [Hallmark](https://github.com/Nutlope/hallmark) | Inspect its instructions and apply relevant quality-floor and visual-distinction guidance; do not assume its linter/runtime is installed. |
+| [Cloudflare Security Audit Skill](https://github.com/cloudflare/security-audit-skill) | Read and apply its source-first security review and threat-boundary procedures to security-relevant tasks. |
+| [Microsoft Playwright](https://github.com/microsoft/playwright) | Inspect the available agent/testing guidance and use the browser-testing workflow if the environment supports it. |
+| [Anthropic Knowledge Work Plugins](https://github.com/anthropics/knowledge-work-plugins) | Inspect available role-specific plugin/skill workflows and load only those that directly support the current task. |
+| [Nathan Gitter — Fluid Interfaces](https://github.com/nathangitter/fluid-interfaces) | Read and apply the implementation examples and motion principles for gesture-driven or fluid interaction work. This remains ORBIT's primary practical motion reference. |
+
+The docs/engineering-guidance.md file records the reviewed sources and how they relate to ORBIT. Update it when the owner supplies additional skills, a skill is replaced, or a source materially changes.
+
+### Required completion standard
+
+For meaningful work, the AI contributor's final report must briefly state the skill procedures it actually applied (for example, planning/TDD, Apple Design review, Nathan Gitter motion principles, or security review). Mention any relevant skill it could not load and why. Do not claim that every listed skill was used on every task; select what genuinely applies, but always inspect the catalog on onboarding and apply the appropriate skill procedures.
+
+No skill collection is an ORBIT website dependency. Loading skills changes the agent's working methods and review process; it does not add code or external services to the deployed product.
 
 ## 11. Keeping this guide current
 
@@ -220,4 +254,4 @@ This document is meant to evolve with ORBIT. When a meaningful decision changes,
 
 Keep detailed implementation explanations in the specialist documents and link them here instead of duplicating large specifications. Remove or revise obsolete guidance when a decision changes. Do not add a log entry for every commit; update the review date and durable instructions when the actual project contract changes.
 
-**A future agent should be able to clone this repository, read this file and the linked documents, inspect the code, and understand both what ORBIT is meant to become and how changes are expected to be made.**
+**A future agent should be able to clone this repository, load the actual applicable skills into its own working context, read this file and the linked documents, inspect the code, and understand both what ORBIT is meant to become and how changes are expected to be made.**
