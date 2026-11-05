@@ -1,5 +1,5 @@
 import { readStore, writeStore, removeStore, createId } from "./storage.js";
-import { escapeHTML, analyzeText, formatJSON } from "./utils.js";
+import { escapeHTML, analyzeText } from "./utils.js";
 
 const app = document.querySelector("#app");
 const dialog = document.querySelector("#project-dialog");
@@ -174,7 +174,12 @@ document.addEventListener("click", event => {
  }
 });
 document.addEventListener("input", event=>{
- if(event.target.id==="scratch-editor"){scratch=event.target.value;writeStore("scratchpad",scratch);document.querySelector("#scratch-status").textContent="Saved locally";}
+ if(event.target.id==="scratch-editor"){
+  scratch=event.target.value;
+  const saved=writeStore("scratchpad",scratch);
+  document.querySelector("#scratch-status").textContent=saved?"Saved locally":"Could not save";
+  document.querySelector("#scratch-status").style.color=saved?"var(--green)":"var(--danger)";
+ }
  if(event.target.id==="text-input"){const stats=analyzeText(event.target.value);document.querySelector("#text-stats").innerHTML=`<span>${stats.words} <small>words</small></span><span>${stats.characters} <small>characters</small></span><span>${stats.lines} <small>lines</small></span>`;}
  if(event.target.id==="project-search"){const q=event.target.value.toLowerCase();const filtered=projects.filter(p=>(p.name+" "+p.description).toLowerCase().includes(q));document.querySelector("#project-results").innerHTML=filtered.length?filtered.map(projectMarkup).join(""):'<div class="empty-state compact"><h3>No matching projects</h3><p>Try a different search.</p></div>';}
 });
