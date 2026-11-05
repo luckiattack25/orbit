@@ -26,3 +26,11 @@ test("static app has no remote API or external runtime dependency", async () => 
   assert.doesNotMatch(html, /https?:\/\//);
   assert.doesNotMatch(app, /fetch\s*\(|XMLHttpRequest/);
 });
+
+test("motion respects reduced-motion preferences", async () => {
+  const css = await read("../styles.css");
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
+  assert.match(css, /animation:\s*none\s*!important/);
+  assert.match(css, /@keyframes planet-float/);
+  assert.match(css, /@keyframes orbit-turn/);
+});
