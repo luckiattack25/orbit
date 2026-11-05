@@ -37,9 +37,12 @@ function persist() {
 function setTheme(theme) {
   prefs.theme = theme;
   writeStore("preferences", prefs);
-  document.documentElement.dataset.theme = theme === "system" ? (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark") : theme;
+  const resolved = theme === "system"
+    ? (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark")
+    : theme;
+  document.documentElement.dataset.theme = resolved;
   const meta = document.querySelector('meta[name="theme-color"]');
-  meta.content = theme === "light" ? "#f4f4f6" : "#101114";
+  meta.content = resolved === "light" ? "#f4f4f6" : "#101114";
 }
 function navigate(page, syncUrl = true) {
   if (!pages.includes(page)) page = "dashboard";
@@ -49,6 +52,7 @@ function navigate(page, syncUrl = true) {
   document.querySelectorAll(".nav-item[data-page]").forEach(button => button.classList.toggle("active", button.dataset.page === page));
   document.querySelector("#page-name").textContent = labels[page];
   document.querySelector("#sidebar").classList.remove("open");
+  document.querySelector("#menu-toggle").setAttribute("aria-expanded", "false");
   render();
 }
 function pageHeader(title, subtitle, action = "") {
@@ -100,6 +104,9 @@ function settingsPage() {
 function render() {
  const views = {dashboard,projects:projectsPage,utilities:utilitiesPage,connections:connectionsPage,remote:()=>futurePage("remote"),youtube:()=>futurePage("youtube"),business:()=>futurePage("business"),settings:settingsPage};
  app.innerHTML = views[currentPage]();
+ app.classList.remove("page-enter");
+ void app.offsetWidth;
+ app.classList.add("page-enter");
  if(currentPage==="utilities") renderTool();
 }
 function openProject(project = null) {
@@ -172,7 +179,11 @@ document.addEventListener("input", event=>{
  if(event.target.id==="project-search"){const q=event.target.value.toLowerCase();const filtered=projects.filter(p=>(p.name+" "+p.description).toLowerCase().includes(q));document.querySelector("#project-results").innerHTML=filtered.length?filtered.map(projectMarkup).join(""):'<div class="empty-state compact"><h3>No matching projects</h3><p>Try a different search.</p></div>';}
 });
 form.addEventListener("submit",saveProject);
-document.querySelector("#menu-toggle").addEventListener("click",()=>document.querySelector("#sidebar").classList.toggle("open"));
+document.querySelector("#menu-toggle").addEventListener("click",()=>{
+ const sidebar = document.querySelector("#sidebar");
+ const open = sidebar.classList.toggle("open");
+ document.querySelector("#menu-toggle").setAttribute("aria-expanded", String(open));
+});
 document.querySelector("#theme-cycle").addEventListener("click",()=>{const order=["dark","light","system"];setTheme(order[(order.indexOf(prefs.theme)+1)%order.length]);if(currentPage==="settings")render();notify("Theme: "+prefs.theme);});
 window.matchMedia("(prefers-color-scheme: light)").addEventListener?.("change",()=>{if(prefs.theme==="system")setTheme("system");});
 setTheme(prefs.theme);
