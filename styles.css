@@ -38,8 +38,14 @@
 @keyframes orbit-turn{from{transform:rotate(-25deg)}to{transform:rotate(335deg)}}
 @keyframes orbit-turn-reverse{from{transform:rotate(43deg)}to{transform:rotate(-317deg)}}
 @keyframes planet-float{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-5px,0)}}
-@keyframes spark-breathe{0%,100%{opacity:.48;scale:.85}50%{opacity:1;scale:1.12}}
+@keyframes spark-breathe{0%,100%{opacity:.48;transform:scale(.85)}50%{opacity:1;transform:scale(1.12)}}
 @media(prefers-reduced-motion:reduce){
  *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
  .content.page-enter>*{opacity:1!important;transform:none!important}
 }
+
+.quick-link:hover{transform:translateY(-2px)}
+.quick-link .quick-icon{transition:transform 260ms var(--ease-fluid),color 180ms var(--ease-fluid)}
+.quick-link:hover .quick-icon{transform:translateY(-2px)}
+.project-row{transition:background-color 180ms var(--ease-fluid)}
+.project-row:hover{background:color-mix(in srgb,var(--surface-2) 72%,transparent)}
