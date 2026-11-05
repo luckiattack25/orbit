@@ -18,13 +18,16 @@ ORBIT is a personal digital environment that gathers useful tools, projects, and
 ## Architecture
 A static application built from semantic HTML, CSS custom properties, and native JavaScript modules. Feature state is persisted through a small versioned local-storage adapter. The UI shell and feature views are separated from storage and formatting utilities.
 
+## Hosting contract
+GitHub Pages publishes the repository root from the `main` branch. This is a project site at `/orbit/`, so app entry points, scripts, stylesheets, and image assets use relative URLs. No server routes, server-side environment variables, Node runtime, or backend APIs are required. The `.nojekyll` marker disables Jekyll processing for static assets.
+
 ## Approaches considered
-1. Next.js full-stack: capable, but adds framework and deployment complexity before a backend exists.
-2. React/Vite: useful when component complexity or routing justifies it, but not necessary for this small static foundation.
-3. Native static modules: selected for fast startup, zero runtime dependencies, straightforward hosting, and an easy future migration seam.
+1. Next.js full-stack: not selected because GitHub Pages cannot run its server-side features.
+2. React/Vite: could be used only with a static export/build configured for the project base path; unnecessary for the current feature set.
+3. Native static modules: selected for zero runtime dependencies, straightforward GitHub Pages publishing, and an easy future migration seam.
 
 ## Data model
-Projects contain id, name, description, status, createdAt, updatedAt. Preferences contain theme and compact display choices. Scratchpad is a single locally stored text document. No secrets are stored.
+Projects contain id, name, description, status, createdAt, updatedAt. Preferences contain theme. Scratchpad is a single locally stored text document. No secrets are stored.
 
 ## Design contract
 Operate mode. The primary task is to enter ORBIT, scan the workspace, and quickly reach a tool or project. Use a persistent desktop sidebar, compact mobile navigation, strong typography, semantic color tokens, thin borders, and restrained ambient pink/blue light. Every interactive state must be visible and keyboard accessible. The app must work at narrow widths and with reduced motion.
